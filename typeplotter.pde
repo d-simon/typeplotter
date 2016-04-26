@@ -28,20 +28,20 @@ void setup() {
   background(0);
   image(loadImage("splash1.png"), 0, 0);
 
-  // CONTROL P5 INIT ----------------------------------------------------------------------------------------------  
+  // CONTROL P5 INIT ----------------------------------------------------------------------------------------------
   cp5 = new ControlP5(this);
 
 
   cp5.addSlider("printSize")
     .setPosition(2, 0)
       .setRange(1, 16)
-        .setValue(1) 
+        .setValue(1)
           .setId(0)
             ;
   cp5.addSlider("dither")
     .setPosition(2, 11)
       .setRange(0, 8)
-        .setValue(4) 
+        .setValue(4)
           .setId(4)
             ;
 
