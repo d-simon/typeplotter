@@ -47,10 +47,10 @@ void setup()
   stepperX.setSpeed(motorSpeed);
   stepperY.setSpeed(motorSpeed);
 
-  pinMode(penPlusA, OUTPUT);     
-  pinMode(penPlusB, OUTPUT);     
-  pinMode(penMinusA, OUTPUT);     
-  pinMode(penMinusB, OUTPUT);    
+  pinMode(penPlusA, OUTPUT);
+  pinMode(penPlusB, OUTPUT);
+  pinMode(penMinusA, OUTPUT);
+  pinMode(penMinusB, OUTPUT);
 
   pinMode(limitPin, INPUT);
   digitalWrite(limitPin, HIGH);
@@ -68,10 +68,10 @@ void setup()
 
   while(!Serial){
   }
-  
+
   if(digitalRead(modeSwitch) == LOW){
     Serial.println("Scan mode!");
-    beep(100,2,false);  
+    beep(100,2,false);
     scan_mode();
     return;
   }
@@ -79,11 +79,11 @@ void setup()
   Serial.println("Print mode!");
 
   beep(100,1,false);
-  
+
   goNull();
   initPen();
   goHome();
-  
+
   //find_paper_width();
   getData();
 
@@ -130,12 +130,12 @@ void getData(){
 
 void draw()
 {
-  for(int row = 0; row < height; row++) { 
+  for(int row = 0; row < height; row++) {
     penUp();
     stepperX.step(-xPos);
-    xPos = 0;  
+    xPos = 0;
 
-    for(int column = 0; column < width; column++){ 
+    for(int column = 0; column < width; column++){
 
       while(Serial.available()<1){
       }
@@ -197,7 +197,7 @@ void penUp()
     delay(penSpeed);
     pen_stop();
 
-    isPenDown = false; 
+    isPenDown = false;
   }
 }
 void pen_forward(){
@@ -317,7 +317,7 @@ void scan_mode(){
       xPos-=5;
 
       if(x!=1) line+=",";
-    } 
+    }
 
     Serial.println(line);
     line="";
