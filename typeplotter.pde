@@ -53,16 +53,16 @@ void setup() {
 
   cp5.addButton("PRINT!")
     .setValue(10)
-      .setPosition(152, 12)
-        .setSize(100, 10)
+      .setPosition(152, 62)
+        .setSize(100, 40)
           .setId(1);
 
-  DropdownList dl = cp5.addDropdownList("Serial Port").setPosition(152, 10).setSize(200, 200).setId(2);
+  DropdownList dl = cp5.addDropdownList("Serial Port").setPosition(152, 0).setSize(200, 200).setId(2);
   for (int i=0; i<Serial.list ().length; i++) {
     dl.addItem(Serial.list()[i], i);
   }
 
-  DropdownList dlSpeed = cp5.addDropdownList("Print Speed").setPosition(256, 22).setSize(96, 100).setId(3);
+  DropdownList dlSpeed = cp5.addDropdownList("Print Speed").setPosition(2, 37).setSize(96, 100).setId(3);
   dlSpeed.addItem("Ultra", 80);
   dlSpeed.addItem("Draft", 100);
   dlSpeed.addItem("Normal", 200);
@@ -101,20 +101,25 @@ void draw() {
   line(0, lineY, width, lineY); // draw status line
 }
 
+
 public void controlEvent(ControlEvent theEvent) {
-
   if (theEvent.isGroup()) {
-
-    if (theEvent.getGroup().getId() == 3) {
-      printSpeed = int(theEvent.getGroup().getValue()); // print speed dropdown
-    } else if (theEvent.getGroup().getId() == 2) {
-      serPort = Serial.list()[int(theEvent.getGroup().getValue())]; // serial port dropdown
+     if (theEvent.getGroup().getId() == 3) {
+       printSpeed = int(theEvent.getGroup().getValue()); // print speed dropdown
+     } else if (theEvent.getGroup().getId() == 2) {
+       serPort = Serial.list()[int(theEvent.getGroup().getValue())]; // serial port dropdown
+     }
+  } else {
+     switch(theEvent.getId()) {
+      case(1):
+        printImage(); // start print
+      break;
+      case(4):
+      case(5):// numberboxB is registered with id 2
+        if (theEvent.getId() == 5) invertState=!invertState;
+        reDither();
+      break;
     }
-  } else if (theEvent.controller().id() == 1) {
-    printImage(); // start print
-  } else if (theEvent.controller().id() == 4 || theEvent.controller().id() == 5) {
-    if (theEvent.controller().id() == 5) invertState=!invertState;
-    reDither();
   }
 }
 
@@ -207,22 +212,21 @@ int dizza(int i, int j, int n) {
 }
 
 void resizeImages() {
-  frame.setResizable(true);
+  surface.setResizable(true);
   if (source.width < width || source.height < width) {
-    frame.resize(source.width, source.height+20);
+    surface.setSize(source.width, source.height+20);
   } else if (source.width>width) {
     source.resize(width, (width/source.width)*source.height);
-    frame.resize(source.width, source.height);
+    surface.setSize(source.width, source.height);
   } else if (source.height>height) {
     source.resize(height, (height/source.height)*source.width);
     source.resize(source.width, source.height);
   }
 
-  frame.setResizable(false);
+  surface.setResizable(false);
 }
 
 void reDither() {
   destination = getDitheredImage(source, dither, invertState); //Redithers image
   destination.save("dest.png");
 }
-
